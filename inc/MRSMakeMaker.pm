@@ -21,7 +21,7 @@ override _build_WriteMakefile_args => sub {
 
 override _build_MakeFile_PL_template => sub {
     my $string = super();
-    $string =~ s/{{ \$eumm_version }}/6.12/g;
+    $string =~ s/\{\{ \$eumm_version \}\}/6.12/g;
     return $string;
 };
 

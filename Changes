@@ -3,6 +3,7 @@ Revision history for {{$dist->name}}
 {{$NEXT}}
     - Regenerate seed after forking
     - Switch from Any::Moose to Moo
+    - Fix warning added in newer perls
     - Add missing Author Dep
 
 0.06 Mon Jan 24 2011
