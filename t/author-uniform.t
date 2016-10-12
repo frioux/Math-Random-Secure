@@ -56,7 +56,7 @@ sub test_uniform {
     }
 
     my ($quant, $got, $expected) = $tester->test($bins);
-    
+
     foreach my $i (0 .. scalar(@$got)-1) {
         cmp_ok(abs($got->[$i] - $expected->[$i]) / $expected->[$i],
                '<', $ACCEPTABLE,

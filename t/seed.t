@@ -12,7 +12,7 @@ cmp_ok(length($seed), '==', 64, 'seed is the right size');
 my @sequence_one = map { irand() } (1..100);
 srand($seed);
 my @sequence_two = map { irand() } (1..100);
-is_deeply(\@sequence_one, \@sequence_two, 
+is_deeply(\@sequence_one, \@sequence_two,
           'Same seed generates the same sequence');
 
 srand();
@@ -28,7 +28,7 @@ warning_like { Math::Random::Secure::RNG->new(seed_size => 4) }
 my $int32 = 2**31;
 warning_like { srand($int32) } qr/RNG seeded with a 32-bit integer/,
              "srand: Using a 32-bit integer throws a warning";
-warning_like { Math::Random::Secure::RNG->new(seed => $int32) } 
+warning_like { Math::Random::Secure::RNG->new(seed => $int32) }
              qr/RNG seeded with a 32-bit integer/,
              "RNG->new: Using a 32-bit integer throws a warning";
 

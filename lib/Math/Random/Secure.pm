@@ -89,7 +89,7 @@ Math::Random::Secure - Cryptographically-secure, cross-platform replacement for 
  # Random integer between 0 and 9 inclusive.
  $int = irand(10);
 
- # Random floating-point number greater than or equal to 0.0 and 
+ # Random floating-point number greater than or equal to 0.0 and
  # less than 10.0.
  $float = rand(10);
 
@@ -132,7 +132,7 @@ call C<srand> if C<srand> has never been called in this process or
 thread.
 
 There is one limitation--Math::Random::Secure is backed by a 32-bit
-random number generator. So if you are on a 64-bit platform and you 
+random number generator. So if you are on a 64-bit platform and you
 specify a limit that is greater than 2^32, you are likely to get
 less-random data.
 
@@ -189,7 +189,7 @@ pseudo-random number generator to generate data. On most systems, this should
 still provide a very good seed for nearly all uses, but it may not be suitable
 for very high-security cryptographic circumstances.
 
-For Windows, there are known issues with C<CryptGenRandom> on Windows 2000 
+For Windows, there are known issues with C<CryptGenRandom> on Windows 2000
 and versions of Windows XP before Service Pack 3. However, there is no
 other built-in method of getting secure random data on Windows, and I suspect
 that these issues will not be significant for most applications of
@@ -223,10 +223,10 @@ private SSH or GPG keypairs, SSL private keys, etc.).
 Describes the requirements and nature of a cryptographically-secure
 random number generator.
 
-=item L<http://en.wikipedia.org/wiki/CryptGenRandom>, 
+=item L<http://en.wikipedia.org/wiki/CryptGenRandom>,
 
 More information about the Windows functions we use to seed ourselves. The
-article also has some information about the weaknesses in Windows 2000's 
+article also has some information about the weaknesses in Windows 2000's
 C<CryptGenRandom> implementation.
 
 =item L<http://www.computerworld.com/s/article/9048438/Microsoft_confirms_that_XP_contains_random_number_generator_bug>
@@ -262,7 +262,7 @@ the author using the email address in the L</AUTHOR> section below.
 
 =head1 BUGS
 
-Math::Random::Secure is relatively new, as of December 2010, but the 
+Math::Random::Secure is relatively new, as of December 2010, but the
 modules that underlie it are very well-tested and have a long history.
 However, the author still welcomes all feedback and bug reports, particularly
 those having to do with the security assurances provided by this module.

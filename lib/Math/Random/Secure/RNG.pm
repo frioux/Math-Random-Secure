@@ -9,19 +9,38 @@ use constant ON_WINDOWS => $^O =~ /Win32/i ? 1 : 0;
 use if ON_WINDOWS, 'Crypt::Random::Source::Strong::Win32';
 
 subtype 'MRS::RNG::Seed' => as 'Str' => where { _check_seed($_) };
-subtype 'MRS::RNG::Rng' => as 'Object' 
+subtype 'MRS::RNG::Rng' => as 'Object'
     => where { $_->can('irand') && $_->can('rand') };
 
-has seeder => (is => 'ro', isa => 'Crypt::Random::Source::Base', 
-               lazy_build => 1);
+has seeder => (
+  is => 'ro',
+  isa => 'Crypt::Random::Source::Base',
+  lazy_build => 1,
+);
 # Default to a 512-bit key, which should be impossible to break. I wrote
 # to the author of ISAAC and he said it's fine to not use a full 256
 # integers to seed ISAAC.
-has seed_size => (is => 'ro', isa => 'Int', default => 64);
-has seed => (is => 'rw', isa => 'MRS::RNG::Seed', lazy_build => 1,
-             clearer => 'clear_seed', predicate => 'has_seed');
-has rng => (is => 'ro', isa => 'MRS::RNG::Rng', lazy_build => 1, 
-            handles => ['irand', 'rand'], clearer => 'clear_rng');
+has seed_size => (
+  is => 'ro',
+  isa => 'Int',
+  default => 64,
+);
+
+has seed => (
+  is => 'rw',
+  isa => 'MRS::RNG::Seed',
+  lazy_build => 1,
+  clearer => 'clear_seed',
+  predicate => 'has_seed',
+);
+
+has rng => (
+  is => 'ro',
+  isa => 'MRS::RNG::Rng',
+  lazy_build => 1,
+  handles => ['irand', 'rand'],
+  clearer => 'clear_rng',
+);
 
 sub BUILD {
     my ($self) = @_;
@@ -137,8 +156,8 @@ L<Math::Random::ISAAC>.
 
 The random data used to seed L</rng>, as a string of bytes. This should
 be large enough to properly seed L</rng>. This means I<minimally>, it
-should be 8 bytes (64 bits) and more ideally, 32 bytes (256 bits) or 64 
-bytes (512 bits). For an idea of how large your seed should be, see 
+should be 8 bytes (64 bits) and more ideally, 32 bytes (256 bits) or 64
+bytes (512 bits). For an idea of how large your seed should be, see
 L<http://burtleburtle.net/bob/crypto/magnitude.html#brute> for information
 on how long it would take to brute-force seeds of each size.
 
@@ -149,7 +168,7 @@ be very random. B<There are serious attacks possible against random number
 generators that are seeded with non-random data or with insufficient random
 data.>
 
-By default, we use a 512-bit (64 byte) seed. If 
+By default, we use a 512-bit (64 byte) seed. If
 L<Moore's Law|http://en.wikipedia.org/wiki/Moore's_law> continues to hold
 true, it will be approximately 1000 years before computers can brute-force a
 512-bit (64 byte) seed at any reasonable speed (and physics suggests that
