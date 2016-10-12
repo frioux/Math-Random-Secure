@@ -15,7 +15,8 @@ subtype 'MRS::RNG::Rng' => as 'Object'
 has seeder => (
   is => 'ro',
   isa => 'Crypt::Random::Source::Base',
-  lazy_build => 1,
+  lazy => 1,
+  builder => '_build_seeder',
 );
 # Default to a 512-bit key, which should be impossible to break. I wrote
 # to the author of ISAAC and he said it's fine to not use a full 256
@@ -29,7 +30,8 @@ has seed_size => (
 has seed => (
   is => 'rw',
   isa => 'MRS::RNG::Seed',
-  lazy_build => 1,
+  lazy => 1,
+  builder => '_build_seed',
   clearer => 'clear_seed',
   predicate => 'has_seed',
 );
@@ -37,7 +39,8 @@ has seed => (
 has rng => (
   is => 'ro',
   isa => 'MRS::RNG::Rng',
-  lazy_build => 1,
+  lazy => 1,
+  builder => '_build_rng',
   handles => ['irand', 'rand'],
   clearer => 'clear_rng',
 );
