@@ -2,19 +2,14 @@ package Math::Random::Secure::RNG;
 BEGIN {
   $Math::Random::Secure::RNG::VERSION = '0.06';
 }
-use Any::Moose qw(Moose ::Util::TypeConstraints);
+use Moo;
 use Math::Random::ISAAC;
 use Crypt::Random::Source::Factory;
 use constant ON_WINDOWS => $^O =~ /Win32/i ? 1 : 0;
 use if ON_WINDOWS, 'Crypt::Random::Source::Strong::Win32';
 
-subtype 'MRS::RNG::Seed' => as 'Str' => where { _check_seed($_) };
-subtype 'MRS::RNG::Rng' => as 'Object'
-    => where { $_->can('irand') && $_->can('rand') };
-
 has seeder => (
   is => 'ro',
-  isa => 'Crypt::Random::Source::Base',
   lazy => 1,
   builder => '_build_seeder',
 );
@@ -23,13 +18,13 @@ has seeder => (
 # integers to seed ISAAC.
 has seed_size => (
   is => 'ro',
-  isa => 'Int',
+  # isa => 'Int',
   default => 64,
 );
 
 has seed => (
   is => 'rw',
-  isa => 'MRS::RNG::Seed',
+  isa => \&_check_seed,
   lazy => 1,
   builder => '_build_seed',
   clearer => 'clear_seed',
@@ -38,7 +33,6 @@ has seed => (
 
 has rng => (
   is => 'ro',
-  isa => 'MRS::RNG::Rng',
   lazy => 1,
   builder => '_build_rng',
   handles => ['irand', 'rand'],
@@ -107,8 +101,7 @@ sub _build_rng {
     return $rng->{backend} ? $rng->{backend} : $rng;
 }
 
-__PACKAGE__->meta->make_immutable;
-__PACKAGE__;
+1;
 
 __END__
 
