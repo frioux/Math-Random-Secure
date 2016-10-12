@@ -40,65 +40,65 @@ has rng => (
 );
 
 sub BUILD {
-    my ($self) = @_;
+  my ($self) = @_;
 
-    if ($self->seed_size < 8) {
-        warn "Setting seed_size to less than 8 is not recommended";
-    }
+  if ($self->seed_size < 8) {
+    warn "Setting seed_size to less than 8 is not recommended";
+  }
 }
 
 sub _check_seed {
-    my ($seed) = @_;
-    if (length($seed) < 8) {
-        warn "Your seed is less than 8 bytes (64 bits). It could be"
-             . " easy to crack";
-    }
-    # If it looks like we were seeded with a 32-bit integer, warn the
-    # user that they are making a dangerous, easily-crackable mistake.
-    # We do this during BUILD so that it happens during srand() in
-    # Math::Secure::RNG.
-    elsif (length($seed) <= 10 and $seed =~ /^\d+$/) {
-        warn "RNG seeded with a 32-bit integer, this is easy to crack";
-    }
+  my ($seed) = @_;
+  if (length($seed) < 8) {
+    warn "Your seed is less than 8 bytes (64 bits). It could be"
+      . " easy to crack";
+  }
+  # If it looks like we were seeded with a 32-bit integer, warn the
+  # user that they are making a dangerous, easily-crackable mistake.
+  # We do this during BUILD so that it happens during srand() in
+  # Math::Secure::RNG.
+  elsif (length($seed) <= 10 and $seed =~ /^\d+$/) {
+    warn "RNG seeded with a 32-bit integer, this is easy to crack";
+  }
 
-    # _check_seed is used as a type constraint, so needs to return 1.
-    return 1;
+  # _check_seed is used as a type constraint, so needs to return 1.
+  return 1;
 }
 
 sub _build_seeder {
-    my $factory = Crypt::Random::Source::Factory->new();
-    # On Windows, we want to always pick Crypt::Random::Source::Strong::Win32,
-    # which this will do.
-    if (ON_WINDOWS) {
-        return $factory->get_strong;
-    }
+  my $factory = Crypt::Random::Source::Factory->new();
+  # On Windows, we want to always pick Crypt::Random::Source::Strong::Win32,
+  # which this will do.
+  if (ON_WINDOWS) {
+    return $factory->get_strong;
+  }
 
-    my $source = $factory->get;
-    # Never allow rand() to be used as a source, it cannot possibly be
-    # cryptographically strong with 2^15 or 2^32 bits for its seed.
-    if ($source->isa('Crypt::Random::Source::Weak::rand')) {
-        $source = $factory->get_strong;
-    }
-    return $source;
+  my $source = $factory->get;
+  # Never allow rand() to be used as a source, it cannot possibly be
+  # cryptographically strong with 2^15 or 2^32 bits for its seed.
+  if ($source->isa('Crypt::Random::Source::Weak::rand')) {
+    $source = $factory->get_strong;
+  }
+  return $source;
 }
 
 sub _build_seed {
-    my ($self) = @_;
-    return $self->seeder->get($self->seed_size);
+  my ($self) = @_;
+  return $self->seeder->get($self->seed_size);
 }
 
 sub _build_rng {
-    my ($self) = @_;
-    my @seed_ints = unpack('L*', $self->seed);
-    my $rng = Math::Random::ISAAC->new(@seed_ints);
-    # One part of having a cryptographically-secure RNG is not being
-    # able to see the seed in the internal state of the RNG.
-    $self->clear_seed;
-    # It's faster to skip the frontend interface of Math::Random::ISAAC
-    # and just use the backend directly. However, in case the internal
-    # code of Math::Random::ISAAC changes at some point, we do make sure
-    # that the {backend} element actually exists first.
-    return $rng->{backend} ? $rng->{backend} : $rng;
+  my ($self) = @_;
+  my @seed_ints = unpack('L*', $self->seed);
+  my $rng = Math::Random::ISAAC->new(@seed_ints);
+  # One part of having a cryptographically-secure RNG is not being
+  # able to see the seed in the internal state of the RNG.
+  $self->clear_seed;
+  # It's faster to skip the frontend interface of Math::Random::ISAAC
+  # and just use the backend directly. However, in case the internal
+  # code of Math::Random::ISAAC changes at some point, we do make sure
+  # that the {backend} element actually exists first.
+  return $rng->{backend} ? $rng->{backend} : $rng;
 }
 
 1;

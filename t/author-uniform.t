@@ -25,47 +25,48 @@ our $LARGE_LIMIT = 3_000_893_649;
 plan tests => (20 * $BINS) - (8 + 20 + 36 + 34);
 
 sub test_uniform {
-    my ($name, $limit, $rng) = @_;
-    $rng ||= \&rand;
+  my ($name, $limit, $rng) = @_;
+  $rng ||= \&rand;
 
-    my $num_runs = $NUM_RUNS;
-    if (defined $limit and $limit > $num_runs) {
-        # Uncomment this line for more extensive testing.
-        #$num_runs = $limit * 2;
-    }
+  my $num_runs = $NUM_RUNS;
+  if (defined $limit and $limit > $num_runs) {
 
-    my $tester = Statistics::Test::RandomWalk->new();
-    if ($rng == \&irand) {
-        $tester->set_rescale_factor($limit || 2**32);
-        $tester->set_data(sub { $rng->($limit) }, $num_runs);
-    }
-    else {
-        my $divide_by;
-        $divide_by = $limit - (1/(2**32)) if $limit;
-        $tester->set_data(
-            sub { $limit ? $rng->($limit) / $divide_by : $rng->() },
-            $num_runs);
-    }
+    # Uncomment this line for more extensive testing.
+    #$num_runs = $limit * 2;
+  }
 
-    my $bins = $BINS;
-    if (defined $limit and $limit == 64) {
-        $bins = 16;
-    }
-    if (defined $limit and $limit < $bins and $limit > 1) {
-        $bins = $limit;
-    }
+  my $tester = Statistics::Test::RandomWalk->new();
+  if ($rng == \&irand) {
+    $tester->set_rescale_factor($limit || 2**32);
+    $tester->set_data(sub { $rng->($limit) }, $num_runs);
+  } else {
+    my $divide_by;
+    $divide_by = $limit - (1 / (2**32)) if $limit;
+    $tester->set_data(sub { $limit ? $rng->($limit) / $divide_by : $rng->() },
+      $num_runs);
+  }
 
-    my ($quant, $got, $expected) = $tester->test($bins);
+  my $bins = $BINS;
+  if (defined $limit and $limit == 64) {
+    $bins = 16;
+  }
+  if (defined $limit and $limit < $bins and $limit > 1) {
+    $bins = $limit;
+  }
 
-    foreach my $i (0 .. scalar(@$got)-1) {
-        cmp_ok(abs($got->[$i] - $expected->[$i]) / $expected->[$i],
-               '<', $ACCEPTABLE,
-               "$name: Quantile $quant->[$i] is within 2% of the expected " .
-               $expected->[$i]);
-    }
+  my ($quant, $got, $expected) = $tester->test($bins);
+
+  foreach my $i (0 .. scalar(@$got) - 1) {
+    cmp_ok(
+      abs($got->[$i] - $expected->[$i]) / $expected->[$i],
+      '<',
+      $ACCEPTABLE,
+      "$name: Quantile $quant->[$i] is within 2% of the expected "
+        . $expected->[$i]);
+  }
 
   if ($ENV{TEST_VERBOSE}) {
-      diag $tester->data_to_report($quant, $got, $expected);
+    diag $tester->data_to_report($quant, $got, $expected);
   }
 }
 

@@ -37,7 +37,7 @@ no_leaks_ok(sub {
 }, 'irand does not leak memory');
 
 no_leaks_ok(sub {
-    for (0..30) {
-      Math::Random::Secure::rand();
-    }
+  for (0..30) {
+    Math::Random::Secure::rand();
+  }
 }, 'rand does not leak memory');

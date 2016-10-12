@@ -9,14 +9,14 @@ use List::MoreUtils qw(all);
 our $HOW_MANY = 10_000;
 
 sub check_range {
-    my ($numbers, $type, $limit) = @_;
-    $limit ||= 10;
-    my $all_less = all { $_ < $limit } @$numbers;
-    ok($all_less, "all $type less than $limit")
-        or diag Dumper($numbers);
-    my $all_more = all { $_ >= 0 } @$numbers;
-    ok($all_more, "all $type greater or equal to 0")
-        or diag Dumper($numbers);
+  my ($numbers, $type, $limit) = @_;
+  $limit ||= 10;
+  my $all_less = all { $_ < $limit } @$numbers;
+  ok($all_less, "all $type less than $limit")
+    or diag Dumper($numbers);
+  my $all_more = all { $_ >= 0 } @$numbers;
+  ok($all_more, "all $type greater or equal to 0")
+    or diag Dumper($numbers);
 }
 
 my @numbers = map { rand(10) } (1..$HOW_MANY);
