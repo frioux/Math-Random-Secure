@@ -39,6 +39,25 @@ has rng => (
   clearer => 'clear_rng',
 );
 
+has _for_pid => (
+  is => 'rw',
+  default => sub { $$ },
+);
+
+sub _clear_for_pid { shift->_for_pid($$) }
+
+before qw(irand rand) => '_maybe_clear_seed';
+
+sub _maybe_clear_seed {
+  my $self = shift;
+
+  if ($self->_for_pid != $$) {
+    $self->clear_seed;
+    $self->_clear_for_pid;
+  }
+}
+
+
 sub BUILD {
   my ($self) = @_;
 

@@ -1,6 +1,7 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+    - Regenerate seed after forking
     - Switch from Any::Moose to Moo
 
 0.06 Mon Jan 24 2011

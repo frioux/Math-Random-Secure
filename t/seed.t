@@ -1,8 +1,9 @@
 #!/usr/bin/perl
 use strict;
 use warnings;
-use Test::More tests => 8;
+use Test::More;
 use Test::Warn;
+use Test::SharedFork;
 use Math::Random::Secure qw(srand irand);
 use Math::Random::Secure::RNG;
 
@@ -41,3 +42,24 @@ warning_like { srand($short_seed) } qr/Your seed is less than/,
 warning_like { Math::Random::Secure::RNG->new(seed => $short_seed) }
   qr/Your seed is less than/,
   "RNG->new: Short seeds throw a warning";
+
+unless (Math::Random::Secure::RNG::ON_WINDOWS()) {
+  srand($seed);
+  my $first = irand();
+  srand($seed);
+  my $second = irand();
+  is($first, $second, 'Same seed (duh)');
+  srand($seed);
+  my $pid = fork;
+  die "Failed to fork: $!" if $pid == -1;
+
+  if ($pid == 0) {
+    my $third = irand();
+    isnt($first, $third, 'Seed gets rebuilt after fork');
+    exit;
+  } else {
+    waitpid($pid, 0)
+  }
+}
+
+done_testing();
