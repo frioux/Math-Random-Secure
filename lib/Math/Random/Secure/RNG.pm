@@ -1,7 +1,7 @@
 package Math::Random::Secure::RNG;
-BEGIN {
-  $Math::Random::Secure::RNG::VERSION = '0.06';
-}
+
+# ABSTRACT: The underlying PRNG, as an object.
+
 use Moo;
 use Math::Random::ISAAC;
 use Crypt::Random::Source::Factory;
@@ -123,10 +123,6 @@ sub _build_rng {
 1;
 
 __END__
-
-=head1 NAME
-
-Math::Random::Secure::RNG - The underlying PRNG, as an object.
 
 =head1 SYNOPSIS
 

@@ -1,7 +1,7 @@
 package Math::Random::Secure;
-BEGIN {
-  $Math::Random::Secure::VERSION = '0.06';
-}
+
+# ABSTRACT: Cryptographically-secure, cross-platform replacement for rand()
+
 use strict;
 use 5.008;
 use base qw(Exporter);
@@ -69,10 +69,6 @@ sub _to_float {
 __PACKAGE__
 
 __END__
-
-=head1 NAME
-
-Math::Random::Secure - Cryptographically-secure, cross-platform replacement for rand()
 
 =head1 SYNOPSIS
 
@@ -258,7 +254,7 @@ don't contain a simple C<rand> replacement and they can be very slow.
 =head1 SUPPORT
 
 Right now, the best way to get support for Math::Random::Secure is to email
-the author using the email address in the L</AUTHOR> section below.
+the author using the email address in the L</AUTHORS> section below.
 
 =head1 BUGS
 
@@ -271,22 +267,4 @@ You can report a bug by emailing C<bug-Math-Random-Secure@rt.cpan.org> or
 by using the RT web interface at
 L<https://rt.cpan.org/Ticket/Display.html?Queue=Math-Random-Secure>. If
 your bug report is security-sensitive, you may also email it directly to the
-author using the email address in the L</AUTHOR> section below.
-
-=head1 AUTHOR
-
-Max Kanat-Alexander <mkanat@cpan.org>
-
-=head1 COPYRIGHT AND LICENSE
-
-Copyright (C) 2010 BugzillaSource, Inc.
-
-This library (the entirety of Math-Random-Secure) is free software; you
-can redistribute it and/or modify it under the terms of the
-Artistic License 2.0. For details, see the full text of the
-license at L<http://opensource.org/licenses/artistic-license-2.0.php>.
-
-This program is distributed in the hope that it will be
-useful, but it is provided "as is" and without any express
-or implied warranties. For details, see the full text of the
-license at L<http://opensource.org/licenses/artistic-license-2.0.php>.
+author using the email address in the L</AUTHORS> section below.

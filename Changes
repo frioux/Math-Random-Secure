@@ -1,6 +1,7 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+    - Fix built dist (POD, in file versions, etc)
 
 0.07      2016-10-16 12:08:57-07:00 America/Los_Angeles
     - Regenerate seed after forking
