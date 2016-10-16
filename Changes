@@ -1,6 +1,8 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+
+0.07      2016-10-16 12:08:57-07:00 America/Los_Angeles
     - Regenerate seed after forking
     - Switch from Any::Moose to Moo
     - Fix warning added in newer perls
