@@ -1,6 +1,8 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+
+0.08      2016-10-16 12:26:27-07:00 America/Los_Angeles
     - Fix built dist (POD, in file versions, etc)
 
 0.07      2016-10-16 12:08:57-07:00 America/Los_Angeles
