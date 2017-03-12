@@ -139,9 +139,6 @@ L<Math::Random::Secure>. But if for some reason you want to modify how the
 random number generator works or you want an object-oriented interface
 to a random-number generator, you can use this.
 
-Math::Random::Secure::RNG uses L<Any::Moose>, meaning that it has a
-C<new> method that works like L<Mouse> or L<Moose> modules work.
-
 =head1 METHODS
 
 =head2 irand

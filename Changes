@@ -1,6 +1,7 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+    - Fix out of date docs
 
 0.08      2016-10-16 12:26:27-07:00 America/Los_Angeles
     - Fix built dist (POD, in file versions, etc)
